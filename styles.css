@@ -67,7 +67,7 @@ body {
   padding: 10px 20px;
   margin: 10px;
   border-radius: 8px;
-  width: 25%;
+  flex: 1 1 25%;
 }
 
 .favorite-card-content {
