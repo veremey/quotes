@@ -1,103 +1,137 @@
-import {
-	hideFavoriteBtn,
-	showFavoriteCard,
-	toggleFavoriteCard,
-	showFavoriteBtn,
-	removeFavoriteCard,
-} from "./src/handlers/favorites.js"
-import { displayCurrentQuote } from "./src/handlers/currentQuote.js"
-import { localStorageSetItem, localStorageGetItem } from "./src/utils/localStorage.js"
-import { getRandomQuote } from "./src/handlers/randomQuote.js"
-import { removeObjectFromArrayById } from "./src/utils/array.js"
+import RandomQuote from "./src/RandomQuote.js"
 
-const CURRENT_QUOTE_KEY = "currentQuote"
-const FAVORITE_QUOTES_KEY = "favoriteQuotes"
+class RandomQuotesApp {
+	constructor() {
+		this.randomQuoteBtn = document.getElementById("random-quote-btn")
+		this.quoteTextElement = document.getElementById("quote-text")
+		this.quoteAuthorElement = document.getElementById("quote-author")
+		this.currentQuote = null
 
-const randomQuoteBtn = document.getElementById("random-quote-btn")
-const quoteFavoriteBtn = document.getElementById("quote-favorite-btn")
-const favoritesContainer = document.getElementById("favorites-container")
-
-let currentQuote = null
-const favoriteQuotes = []
-
-function removeFavoriteQuote(id) {
-	// REMOVE FAVORITE QUOTE
-	if (id === currentQuote.id) {
-		// Removing from favorites current quote by clicking on the card Remove from favorites button
-		toggleCurrentQuote()
-	} else {
-		// Removing from favorites quote which is not current quote
-		// sync app state by remove favorite quote from the favorite quotes array
-		removeObjectFromArrayById(favoriteQuotes, id)
-		// Remove favorite card from UI
-		removeFavoriteCard(id)
-		// Save favorite quotes in the local storage
-		localStorageSetItem(FAVORITE_QUOTES_KEY, favoriteQuotes)
+		this.init()
 	}
-	// // The way to find current quote in the HTML in the other module
-	// const currentQuote = document.querySelector('[data-current-quote-id]');
-	// const currentQuoteId = currentQuote.dataset.currentQuoteId;
-}
 
-function toggleCurrentQuote() {
-	// CURRENT QUOTE UPDATE
-	// sync app state and toggle isFavorite of the current quote
-	currentQuote.isFavorite = !currentQuote.isFavorite
-	// update UI by toggling favorite Icon (no need to display again current quote)
-	showFavoriteBtn(currentQuote.isFavorite)
-	// Save current quote in the local storage
-	localStorageSetItem(CURRENT_QUOTE_KEY, currentQuote)
+	displayCurrentQuote() {
+		const { text, author } = this.currentQuote || {}
 
-	// FAVORITE QUOTES UPDATE
-	// sync app state and update favoriteQuotes array
-	if (currentQuote.isFavorite) {
-		favoriteQuotes.push({ ...currentQuote })
-	} else {
-		removeObjectFromArrayById(favoriteQuotes, currentQuote.id)
+		this.quoteTextElement.textContent = `"${text}"`
+		this.quoteAuthorElement.textContent = author
 	}
-	// update UI by adding or removing favorite card
-	toggleFavoriteCard(currentQuote, favoritesContainer)
-	// Save favorite quotes in the local storage
-	localStorageSetItem(FAVORITE_QUOTES_KEY, favoriteQuotes)
-}
 
-function setCurrentQuote(quote) {
-	// SET CURRENT QUOTE WHEN LOADED FROM LOCAL STORAGE OR RECEIVED RANDOMLY
-	// Change app state and write copy of the quote to the current quote
-	currentQuote = { ...quote }
-	// Check if id of the current quote is among favorite quotes and set isFavorite
-	currentQuote.isFavorite = !!favoriteQuotes.find(
-		(favoriteQuote) => favoriteQuote.id === currentQuote.id
-	)
-	// Show current quote in the UI
-	displayCurrentQuote(currentQuote)
-	// Display favorite Icon and change its state
-	showFavoriteBtn(currentQuote.isFavorite)
-	// Save current quote in the local storage
-	localStorageSetItem(CURRENT_QUOTE_KEY, currentQuote)
-}
+	getRandomQuote() {
+		const randomQuote = RandomQuote.getRandomQuote()
+		this.currentQuote = randomQuote
+		this.displayCurrentQuote()
+	}
 
-hideFavoriteBtn()
-quoteFavoriteBtn.addEventListener("click", toggleCurrentQuote)
-
-// expecting new random quote {id, text, author, ...}
-randomQuoteBtn.addEventListener("click", () => setCurrentQuote(getRandomQuote()))
-
-function init() {
-	const favoriteQuotesFromStorage = localStorageGetItem(FAVORITE_QUOTES_KEY)
-	if (favoriteQuotesFromStorage) {
-		favoriteQuotesFromStorage.forEach((quote) => {
-			favoriteQuotes.push(quote)
-			showFavoriteCard(quote, favoritesContainer)
+	init() {
+		this.randomQuoteBtn.addEventListener("click", () => {
+			this.getRandomQuote()
 		})
 	}
-
-	const currentQuoteFromStorage = localStorageGetItem(CURRENT_QUOTE_KEY)
-	if (currentQuoteFromStorage) {
-		setCurrentQuote(currentQuoteFromStorage)
-	}
 }
 
-window.addEventListener("load", init)
+new RandomQuotesApp()
 
-export { quoteFavoriteBtn, removeFavoriteQuote }
+// import {
+// 	hideFavoriteBtn,
+// 	showFavoriteCard,
+// 	toggleFavoriteCard,
+// 	showFavoriteBtn,
+// 	removeFavoriteCard,
+// } from "./src/handlers/favorites.js"
+// import { displayCurrentQuote } from "./src/handlers/currentQuote.js"
+// import { localStorageSetItem, localStorageGetItem } from "./src/utils/localStorage.js"
+// import { getRandomQuote } from "./src/handlers/randomQuote.js"
+// import { removeObjectFromArrayById } from "./src/utils/array.js"
+
+// const CURRENT_QUOTE_KEY = "currentQuote"
+// const FAVORITE_QUOTES_KEY = "favoriteQuotes"
+
+// const randomQuoteBtn = document.getElementById("random-quote-btn")
+// const quoteFavoriteBtn = document.getElementById("quote-favorite-btn")
+// const favoritesContainer = document.getElementById("favorites-container")
+
+// let currentQuote = null
+// const favoriteQuotes = []
+
+// function removeFavoriteQuote(id) {
+// 	// REMOVE FAVORITE QUOTE
+// 	if (id === currentQuote.id) {
+// 		// Removing from favorites current quote by clicking on the card Remove from favorites button
+// 		toggleCurrentQuote()
+// 	} else {
+// 		// Removing from favorites quote which is not current quote
+// 		// sync app state by remove favorite quote from the favorite quotes array
+// 		removeObjectFromArrayById(favoriteQuotes, id)
+// 		// Remove favorite card from UI
+// 		removeFavoriteCard(id)
+// 		// Save favorite quotes in the local storage
+// 		localStorageSetItem(FAVORITE_QUOTES_KEY, favoriteQuotes)
+// 	}
+// 	// // The way to find current quote in the HTML in the other module
+// 	// const currentQuote = document.querySelector('[data-current-quote-id]');
+// 	// const currentQuoteId = currentQuote.dataset.currentQuoteId;
+// }
+
+// function toggleCurrentQuote() {
+// 	// CURRENT QUOTE UPDATE
+// 	// sync app state and toggle isFavorite of the current quote
+// 	currentQuote.isFavorite = !currentQuote.isFavorite
+// 	// update UI by toggling favorite Icon (no need to display again current quote)
+// 	showFavoriteBtn(currentQuote.isFavorite)
+// 	// Save current quote in the local storage
+// 	localStorageSetItem(CURRENT_QUOTE_KEY, currentQuote)
+
+// 	// FAVORITE QUOTES UPDATE
+// 	// sync app state and update favoriteQuotes array
+// 	if (currentQuote.isFavorite) {
+// 		favoriteQuotes.push({ ...currentQuote })
+// 	} else {
+// 		removeObjectFromArrayById(favoriteQuotes, currentQuote.id)
+// 	}
+// 	// update UI by adding or removing favorite card
+// 	toggleFavoriteCard(currentQuote, favoritesContainer)
+// 	// Save favorite quotes in the local storage
+// 	localStorageSetItem(FAVORITE_QUOTES_KEY, favoriteQuotes)
+// }
+
+// function setCurrentQuote(quote) {
+// 	// SET CURRENT QUOTE WHEN LOADED FROM LOCAL STORAGE OR RECEIVED RANDOMLY
+// 	// Change app state and write copy of the quote to the current quote
+// 	currentQuote = { ...quote }
+// 	// Check if id of the current quote is among favorite quotes and set isFavorite
+// 	currentQuote.isFavorite = !!favoriteQuotes.find(
+// 		(favoriteQuote) => favoriteQuote.id === currentQuote.id
+// 	)
+// 	// Show current quote in the UI
+// 	displayCurrentQuote(currentQuote)
+// 	// Display favorite Icon and change its state
+// 	showFavoriteBtn(currentQuote.isFavorite)
+// 	// Save current quote in the local storage
+// 	localStorageSetItem(CURRENT_QUOTE_KEY, currentQuote)
+// }
+
+// hideFavoriteBtn()
+// quoteFavoriteBtn.addEventListener("click", toggleCurrentQuote)
+
+// // expecting new random quote {id, text, author, ...}
+// randomQuoteBtn.addEventListener("click", () => setCurrentQuote(getRandomQuote()))
+
+// function init() {
+// 	const favoriteQuotesFromStorage = localStorageGetItem(FAVORITE_QUOTES_KEY)
+// 	if (favoriteQuotesFromStorage) {
+// 		favoriteQuotesFromStorage.forEach((quote) => {
+// 			favoriteQuotes.push(quote)
+// 			showFavoriteCard(quote, favoritesContainer)
+// 		})
+// 	}
+
+// 	const currentQuoteFromStorage = localStorageGetItem(CURRENT_QUOTE_KEY)
+// 	if (currentQuoteFromStorage) {
+// 		setCurrentQuote(currentQuoteFromStorage)
+// 	}
+// }
+
+// window.addEventListener("load", init)
+
+// export { quoteFavoriteBtn, removeFavoriteQuote }
