@@ -1,8 +1,8 @@
 import quotes from "../data/quotes.js"
-import { generateRandomInt } from "../utils/math.js"
+import MathUtils from "../utils/math.js"
 
 function getRandomQuote() {
-	return { ...quotes[generateRandomInt(quotes.length)] }
+	return { ...quotes[MathUtils.generateRandomInt(quotes.length)] }
 }
 
 export { getRandomQuote }
