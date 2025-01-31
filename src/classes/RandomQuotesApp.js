@@ -3,7 +3,7 @@ import RandomQuote from "./RandomQuote.js"
 class RandomQuotesApp {
 	constructor() {
 		this.randomQuoteBtn = document.getElementById("random-quote-btn")
-		this.quoteTextElement = document.getElementById("random-text")
+		this.quoteTextElement = document.getElementById("quote-text")
 		this.quoteAuthorElement = document.getElementById("quote-author")
 		this.currentQuote = null
 
