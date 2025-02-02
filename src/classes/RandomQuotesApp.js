@@ -3,7 +3,8 @@ import RandomQuote from "./RandomQuote.js"
 class RandomQuotesApp {
 	constructor() {
 		this.randomQuoteBtn = document.getElementById("random-quote-btn")
-		this.quoteTextElement = document.getElementById("random-text")
+		this.randomQuoteAPIBtn = document.getElementById("random-quote-api-btn")
+		this.quoteTextElement = document.getElementById("quote-text")
 		this.quoteAuthorElement = document.getElementById("quote-author")
 		this.currentQuote = null
 
@@ -21,8 +22,12 @@ class RandomQuotesApp {
 		this.displayCurrentQuote()
 	}
 
+	getRandomQuoteViaAPI() {
+		const randomQuote = RandomQuote.getRandomQuoteViaAPI()
+	}
 	init() {
 		this.randomQuoteBtn.addEventListener("click", () => this.getRandomQuote())
+		this.randomQuoteAPIBtn.addEventListener("click", () => this.getRandomQuoteViaAPI())
 	}
 }
 
