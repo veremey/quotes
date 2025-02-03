@@ -11,13 +11,21 @@ class RandomQuote {
 
 	static getRandomQuoteViaAPI() {
 		const url = "https://api.quotable.io/random"
-		fetch(url).then((res) => {
-			// return res.json()
-			console.log(res)
-			console.log(res.ok)
-			console.log(res.headers)
-			console.log(res.body)
-		})
+		fetch(url)
+			.then((res) => {
+				return res.json()
+			})
+			.then((quote) => {
+				console.log(quote)
+				// const id = quote._id
+				// const text = quote.content
+				// const author = quote.author
+				// the same ^^
+				const { _id: id, content: text, author } = quote
+
+				return new Quote(id, text, author)
+			})
+			.catch((error) => console.log("ERROR: ", error))
 	}
 }
 

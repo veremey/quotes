@@ -24,7 +24,10 @@ class RandomQuotesApp {
 
 	getRandomQuoteViaAPI() {
 		const randomQuote = RandomQuote.getRandomQuoteViaAPI()
+		this.currentQuote = randomQuote
+		this.displayCurrentQuote()
 	}
+
 	init() {
 		this.randomQuoteBtn.addEventListener("click", () => this.getRandomQuote())
 		this.randomQuoteAPIBtn.addEventListener("click", () => this.getRandomQuoteViaAPI())
