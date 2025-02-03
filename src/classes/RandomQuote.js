@@ -11,7 +11,7 @@ class RandomQuote {
 
 	static getRandomQuoteViaAPI() {
 		const url = "https://api.quotable.io/random"
-		fetch(url)
+		return fetch(url)
 			.then((res) => {
 				return res.json()
 			})
