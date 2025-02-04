@@ -22,11 +22,14 @@ class RandomQuotesApp {
 		this.displayCurrentQuote()
 	}
 
-	getRandomQuoteViaAPI() {
-		RandomQuote.getRandomQuoteViaAPI().then((quote) => {
+	async getRandomQuoteViaAPI() {
+		try {
+			const quote = await RandomQuote.getRandomQuoteViaAPI()
 			this.currentQuote = quote
 			this.displayCurrentQuote()
-		})
+		} catch (e) {
+			throw new Error(e)
+		}
 	}
 
 	init() {
