@@ -12,7 +12,10 @@ class RandomQuote {
 	static async getRandomQuoteViaAPI() {
 		try {
 			const url = "https://api.quotable.io/random"
-			const response = await fetch(url)
+			const options = {
+				headers: { "Content-Type": "application/json" },
+			}
+			const response = await fetch(url, options)
 			const quote = await response.json()
 			const { _id: id, content: text, author } = quote
 

@@ -1,3 +1,4 @@
+import Quote from "./Quote.js"
 import RandomQuote from "./RandomQuote.js"
 
 class RandomQuotesApp {
@@ -16,17 +17,22 @@ class RandomQuotesApp {
 		this.quoteAuthorElement.textContent = this.currentQuote.formatAuthor()
 	}
 
+	changeCurrentQuote(newQuote) {
+		if (newQuote instanceof Quote) {
+			this.currentQuote = newQuote
+			this.displayCurrentQuote()
+		}
+	}
+
 	getRandomQuote() {
 		const randomQuote = RandomQuote.getRandomQuote()
-		this.currentQuote = randomQuote
-		this.displayCurrentQuote()
+		this.changeCurrentQuote(randomQuote)
 	}
 
 	async getRandomQuoteViaAPI() {
 		try {
 			const quote = await RandomQuote.getRandomQuoteViaAPI()
-			this.currentQuote = quote
-			this.displayCurrentQuote()
+			this.changeCurrentQuote(quote)
 		} catch (e) {
 			throw new Error(e)
 		}
