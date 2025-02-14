@@ -10,8 +10,6 @@ function getRandomQuote() {
 }
 
 app.get("/quotes/random-single", (req, res) => {
-	console.log(req.headers["user-agent"])
-
 	const randomQuote = getRandomQuote()
 	res.json(randomQuote)
 })

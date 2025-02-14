@@ -18,10 +18,10 @@ body {
   border: none;
   cursor: pointer;
   border-radius: 10px;
+  align-self: center;
 }
 
 .btn-primary {
-  align-self: center;
   background-color: #007bff;
 }
 
@@ -30,7 +30,6 @@ body {
 }
 
 .btn-secondary {
-  align-self: center;
   background-color: #28a745;
   color: #fff;
   border: 1px solid #28a745;
@@ -39,6 +38,15 @@ body {
 .btn-secondary:hover {
   background-color: #218838;
   border-color: #1e7e34;
+}
+
+.btn-ternary {
+  background-color: #ffc107;
+  color: black;
+}
+
+.btn-ternary:hover {
+  background-color: #ffb400;
 }
 
 .btn-danger {
