@@ -9,7 +9,10 @@ function getRandomQuote() {
 	return quotes[randomIndex]
 }
 
-app.use(cors())
+const corsOptions = {
+	origin: ["http://localhost:8080", "http://127.0.0.1:8080"], //can add restrictions
+}
+app.use(cors(corsOptions))
 app.get("/quotes/random-single", (req, res) => {
 	const randomQuote = getRandomQuote()
 	res.json(randomQuote)
