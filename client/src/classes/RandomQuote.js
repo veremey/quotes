@@ -1,6 +1,7 @@
 import quotes from "../data/quotes.js"
 import Quote from "./Quote.js"
 import MathUtils from "../utils/math.js"
+import { config } from "../../config.js"
 
 class RandomQuote {
 	static getRandomQuote() {
@@ -10,7 +11,7 @@ class RandomQuote {
 	}
 
 	static async getRandomQuoteViaPublicAPI() {
-		const url = "https://api.quotable.io/random"
+		const url = `${config.PUBLIC_API_URL}/random`
 		const options = {
 			headers: { "Content-Type": "application/json" },
 		}
@@ -27,7 +28,7 @@ class RandomQuote {
 	}
 
 	static async getRandomQuoteViaOwnAPI() {
-		const url = "http://localhost:3000/quotes/random-single"
+		const url = config.OWN_API_URL + "/quotes/random-single"
 		const options = { headers: { "Content-Type": "application/json" } }
 		try {
 			const response = await fetch(url, options)
